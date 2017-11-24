@@ -86,13 +86,15 @@ public class MainActivity extends AppCompatActivity {
         view1 = (TextView) findViewById(R.id.spinner1_textview);
         view2 = (TextView) findViewById(R.id.spinner2_textview);
 
+        // Two spinner letting user to select area of interest
         spinner1 = (Spinner) findViewById(R.id.spinner1);
         spinner2 = (Spinner) findViewById(R.id.spinner2);
 
+        // Create an ArrayAdapter using the string array and a default spinner layout
         adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,state);
-
+        // Specify the layout to use when the list of choices appears
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
+        // Apply the adapter to the spinner
         spinner1.setAdapter(adapter1);
 
         spinner1.setOnItemSelectedListener(new SpinnerSelectedListener() {
@@ -111,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         spinner1.setVisibility(View.VISIBLE);
 
 
-
+        // Hit the Web View button and visit AURIN website, using internal browser
         ImageButton web = (ImageButton) findViewById(R.id.webview);
         web.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
+        // Go to SecondActivity
         next1 = (ImageButton) findViewById(R.id.next1);
         next1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,6 +136,9 @@ public class MainActivity extends AppCompatActivity {
                 intent.setAction("action");
                 //Bundle bundle = new Bundle();
                 //bundle.putParcelableArrayList("titles", titles);
+
+                // Pass these data to next activity
+                // bbox is the suburb name
                 String bbox = spinner2.getSelectedItem().toString();
                 BBOX filter_bbox = City_BBOX.city_bbox.get(bbox);
                 Picked_City.picked_city = filter_bbox;
@@ -145,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
+        // Go to AboutUsActivity
         ImageButton aboutus = (ImageButton) findViewById(R.id.about_us);
         aboutus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
 
     private void city_filter(BBOX city){
         double city_lowla = city.getLowerLa();
@@ -170,42 +176,43 @@ public class MainActivity extends AppCompatActivity {
             else if(cap.bbox.getLowerLa()>city_hila && cap.bbox.getLowerLon()>city_hilo){
                 AllDatasets.lists.remove(cap);
             }
-
         }
-
     }
 
-    // sending http request for all the datasets.
+
+    // sending http request for all dataset, and then parse the received data
     private void sendRequestWithURLConnection() {
-        //System.out.println("URL connection");
+//        System.out.println("URL connection");
+        // Create a new thread for HttpURLConnection
         new Thread(new Runnable() {
             @Override
             public void run() {
                 HttpURLConnection connection;
-                Authenticator.setDefault (new Authenticator() {
+                Authenticator.setDefault(new Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
+                        // Default API key
                         return new PasswordAuthentication ("student", "dj78dfGF".toCharArray());
                     }
                 });
                 try{
-                    //                    URL url = new URL("http://openapi.aurin.org.au/wfs?service=WFS&version=1.1.0&request=GetCapabilities")
                     URL url = new URL("http://openapi.aurin.org.au/wfs?service=WFS&version=1.1.0&request=GetCapabilities");
                     connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
                     connection.setConnectTimeout(8000);
                     connection.setReadTimeout(8000);
-                    //System.out.println(" connection complete ");
+
                     InputStream in = connection.getInputStream();
                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                     StringBuilder response = new StringBuilder();
                     String line;
-                    //System.out.println("line complete");
                     while ((line = reader.readLine()) != null) {
                         response.append(line);
                     }
+                    // Store all data in the string
                     String data = response.toString();
-                    //System.out.println(data);
+
                     parseXMLWithPull(data);
+
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -232,10 +239,12 @@ public class MainActivity extends AppCompatActivity {
 
             ArrayList<String> keywords = new ArrayList<>();
             while (eventType != XmlPullParser.END_DOCUMENT) {
+                // nodeName is the current XML tag
                 String nodeName = xmlPullParser.getName();
                 switch (eventType) {
                     case XmlPullParser.START_TAG: {
                         if ("Name".equals(nodeName)) {
+                            // get the content after nodeName
                             name = xmlPullParser.nextText();
                         }
                         else if ("Title".equals(nodeName)){
@@ -279,6 +288,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     }
                     case XmlPullParser.END_TAG: {
+                        // If END_TAG is met, then create a new Capability object to store all data get above
                         if ("FeatureType".equals(nodeName)) {
                             Capabilities cap = new Capabilities();
                             cap.name = name;
@@ -288,10 +298,14 @@ public class MainActivity extends AppCompatActivity {
                             cap.keywords = keywords;
                             cap.geoname = geoname;
                             //cap.bbox = bbox;
+
+                            // WEIRD!
                             cap.bbox.setHigherLa(bbox.getHigherLa());
                             cap.bbox.setHigherLon(bbox.getHigherLon());
                             cap.bbox.setLowerLa(bbox.getLowerLa());
                             cap.bbox.setLowerLon(bbox.getLowerLon());
+
+                            // set the organization logo for each capability
                             switch (organization){
                                 case " Government of New South Wales - Department of Planning and Environment":
                                     cap.image_id=R.drawable.government_of_new_south_wales_department_of_plaaning_and_envirnoment;
@@ -413,10 +427,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // obtian areas related to the state.
+    // obtain areas in the state and show them in the spinner
     public void getArea(String str){
         String item=str;
-        System.out.println(item);
         if(item.equals("Australian Capital Territory")){
             adapter2 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,act);
             adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

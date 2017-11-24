@@ -21,7 +21,7 @@ public class StepthroughActivity extends AppCompatActivity implements GestureDet
     private ViewFlipper viewFlipper;
     //定义手势检测器实例
     GestureDetector detector;
-    //定义动画
+    //define animations
     private Animation enter_left_to_right;
     private Animation exit_left_to_right;
 
@@ -42,19 +42,21 @@ public class StepthroughActivity extends AppCompatActivity implements GestureDet
         setContentView(R.layout.activity_stepthrough);
 
         detector=new GestureDetector(this);
-        //获得ViewFlipper实例
+        //Get ViewFlipper instance
         viewFlipper = (ViewFlipper) this.findViewById(R.id.flipper);
-        /** 从左到右的两个动画 */
+        // 2 animations from left to right
         enter_left_to_right = AnimationUtils.loadAnimation(this,
                 R.anim.enter_left_to_right);
         exit_left_to_right = AnimationUtils.loadAnimation(this,
                 R.anim.exit_left_to_right);
-        /** 从右到左的两个动画 */
+        // 2 animations from right to left
         enter_right_to_left = AnimationUtils.loadAnimation(this,
                 R.anim.enter_right_to_left);
         exit_right_to_left = AnimationUtils.loadAnimation(this,
                 R.anim.exit_right_to_left);
 
+
+        // If skip button is hit, go to StartActivity
         skip = (ImageButton) findViewById(R.id.skip_button);
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
