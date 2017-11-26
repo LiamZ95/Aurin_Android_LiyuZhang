@@ -35,8 +35,8 @@ public class StepthroughActivity extends AppCompatActivity implements GestureDet
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN); //请求全屏
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN); //请求全屏
         getWindow().requestFeature(Window.FEATURE_NO_TITLE); //请求没有标题栏
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stepthrough);
@@ -61,7 +61,7 @@ public class StepthroughActivity extends AppCompatActivity implements GestureDet
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(StepthroughActivity.this,StartActivity.class);
+                Intent intent = new Intent(StepthroughActivity.this,MainActivity.class);
                 startActivity(intent);
             }
         });

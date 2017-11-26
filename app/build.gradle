@@ -34,6 +34,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.0-alpha2'
     compile 'com.google.android.gms:play-services:8.4.0'
     compile 'com.google.maps.android:android-maps-utils:0.4.+'
+    // TBI(liam)
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
     compile 'com.google.android.gms:play-services-ads:8.4.0'
     compile 'com.google.android.gms:play-services-auth:8.4.0'

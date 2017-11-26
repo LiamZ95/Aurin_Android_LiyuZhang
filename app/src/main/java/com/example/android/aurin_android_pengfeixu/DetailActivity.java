@@ -28,16 +28,17 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        // Initializing google map
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map_fragment);
         mapFragment.getMapAsync(this);
 
         Intent intent = getIntent();
         if ("action".equals(intent.getAction())) {
-
+            // Get the selected single capacity from SecondActivity
             Capabilities cap = (Capabilities)intent.getSerializableExtra("capobj");
             Picked_City.cap_picked = cap;
-
+            // Show the info about this capacity
             TextView title = (TextView) findViewById(R.id.title_text);
             title.setText(cap.title);
 
@@ -47,6 +48,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
             TextView abstracts = (TextView) findViewById(R.id.abstract_text);
             abstracts.setText(cap.abstracts);
 
+            // Get the coordinates of the capacity, which is bbox
             TextView lowla = (TextView) findViewById(R.id.lowerla_text);
             lowla.setText(cap.bbox.getLowerLa().toString());
 
@@ -59,6 +61,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
             TextView hilo = (TextView) findViewById(R.id.higherlo_text);
             hilo.setText(cap.bbox.getHigherLon().toString());
 
+            // Visualize the capacity using google map
             ImageButton showmap = (ImageButton) findViewById(R.id.show_map);
             showmap.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -76,21 +79,23 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
+        // Get the centre of the capacity
         double lla = Picked_City.cap_picked.bbox.getLowerLa();
         double hla = Picked_City.cap_picked.bbox.getHigherLa();
         double llo = Picked_City.cap_picked.bbox.getLowerLon();
         double hlo = Picked_City.cap_picked.bbox.getHigherLon();
-
         LatLng center = new LatLng((lla+hla)/2.0,(llo+hlo)/2.0);
+
+        // Set zoom ratio
         int zoom = (int) Math.log(210/(hlo - llo)) + 1;
+        // TOBEIMPROVED
         mMap.addMarker(new MarkerOptions().position(center).title("Marker in place"));
+
         mMap.moveCamera(CameraUpdateFactory.newLatLng(center));
         mMap.isMyLocationEnabled();
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(center, zoom));
 
-        // Polylines are useful for marking paths and routes on the map.
+        // Using polylines to show the area of capacity
         mMap.addPolyline(new PolylineOptions().geodesic(true)
                 .add(new LatLng(lla, llo))
                 .add(new LatLng(hla, llo))

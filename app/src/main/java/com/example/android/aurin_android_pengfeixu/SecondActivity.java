@@ -24,10 +24,13 @@ public class SecondActivity extends AppCompatActivity{
     public EditText eSearch;
 
     @Override
+    /*
+     If user does not specify any keyword but select dataset directly,
+     should jump to DetailActivity, otherwise jump to ThirdActivity.
+      */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
-        System.out.println("SSSSSSSSSSSATR 2222222!!!");
 
         // Receive intent from previous activity
         Intent intent = getIntent();
@@ -35,12 +38,12 @@ public class SecondActivity extends AppCompatActivity{
             BBOX filter_bbox;
             filter_bbox = (BBOX)intent.getSerializableExtra("bbox");
             Picked_City.picked_city = filter_bbox;
+
+            // cap2 contains all dataset from MainActivity
             // Add all capabilities from MainActivity to cap2
             for (int i = 0; i< AllDatasets.lists.size();i++){
                 cap2.add(AllDatasets.lists.get(i));
             }
-//            System.out.println("doooooooooooooo filter!!!");
-//            System.out.println("finishhhhhhhhhhhhh filter!!!");
 
             // Ensure all organizations are shown in the spinner
             for(int i =0; i<cap2.size(); i++){
@@ -114,55 +117,6 @@ public class SecondActivity extends AppCompatActivity{
 
 
     }
-
-//    private void filter(BBOX filter_bbox) {
-//        System.out.println("ininininini!");
-//
-//        double citylowlo = filter_bbox.getLowerLon();
-//        double citylowla = filter_bbox.getHigherLa();
-//        double cityhighlo = filter_bbox.getHigherLon();
-//        double cityhighla = filter_bbox.getHigherLa();
-//        double temp;
-//
-//        for(int i=0, len =cap2.size();i<len;i++ ){
-//            double datalowlo = cap2.get(i).bbox.getLowerLon();
-//            double datalowla = cap2.get(i).bbox.getHigherLa();
-//            double datahighlo = cap2.get(i).bbox.getHigherLon();
-//            double datahgihla = cap2.get(i).bbox.getHigherLa();
-//
-//            if(cityhighlo < citylowlo){
-//                temp = cityhighlo;
-//                cityhighlo = citylowlo;
-//                citylowlo = temp;
-//            }
-//            if(cityhighla < citylowla){
-//                temp = cityhighla;
-//                cityhighla = citylowla;
-//                citylowla = temp;
-//            }
-//            if(datahighlo < datalowlo){
-//                temp = datahighlo;
-//                datahighlo = datalowlo;
-//                datalowlo = temp;
-//            }
-//            if(datahgihla < datalowla){
-//                temp = datahgihla;
-//                datahgihla = datalowla;
-//                datalowla = temp;
-//            }
-//            if (max(citylowlo,datalowlo) > min(cityhighlo,datahighlo) ||
-//                    max(citylowla,datalowla) > min(cityhighla,datahgihla)){
-//                cap2.remove(i);
-//                len--;
-//                i--;
-//            }
-//        }
-//
-//        for(int i = 0; i< cap2.size(); i++){
-//            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+cap2.get(i).name);
-//        }
-//        System.out.println("outouotuotuotuo!");
-//    }
 
     private double max(double a, double b) {
         if(a>=b)

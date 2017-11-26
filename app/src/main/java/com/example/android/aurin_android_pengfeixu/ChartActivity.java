@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -59,10 +61,12 @@ public class ChartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
+        // Get data from AURIN
         sendRequestWithURLConnection();
         barchat = (BarChart) findViewById(R.id.chart1);
     }
-    // visulize bar chart
+
+    // visualize bar chart
     private void visual_it(BarChart chart){
         XAxis xAxis = barchat.getXAxis();
         //Set the text description of the X axis at the bottom
@@ -91,7 +95,8 @@ public class ChartActivity extends AppCompatActivity {
         barchat.animateXY(3000, 3000);
         barchat.invalidate();
     }
-    // sending http request with certain command for certain data.
+
+    // Sending http request with certain command for certain data.
     private void sendRequestWithURLConnection() {
         final String typename = Picked_City.cap_picked.name;
         final String geoname = Picked_City.cap_picked.geoname;
@@ -115,7 +120,7 @@ public class ChartActivity extends AppCompatActivity {
                             "MaxFeatures=1000&outputFormat=json&CQL_FILTER=BBOX" +
                             "("+geoname+","+lla+","+llo+","+hla+","+hlo+")&PropertyName="
                             + Map_Setting.attribute +","+ Map_Setting.classifier);
-
+                    Log.i("URLOutput", url.toString());
                     connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
                     connection.setConnectTimeout(8000);
@@ -140,7 +145,7 @@ public class ChartActivity extends AppCompatActivity {
             }
         }).start();
     }
-    // parsing the json responsed.
+    // Parse the received JSON
     private void parsingJsonObj(String jsonString) throws JSONException {
         JSONObject obj = new JSONObject(jsonString);
         JSONArray jsonArray = new JSONArray(obj.getString("features"));

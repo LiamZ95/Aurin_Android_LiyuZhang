@@ -23,7 +23,6 @@ public class ThirdActivity extends AppCompatActivity {
         setContentView(R.layout.activity_third);
         Intent intent = getIntent();
         if ("action".equals(intent.getAction())){
-            //cap3 = AllDatastes.lists;
             for (int i =0; i<AllDatasets.lists.size();i++){
                 cap3.add(AllDatasets.lists.get(i));
             }

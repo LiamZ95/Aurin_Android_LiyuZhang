@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.Toast;
@@ -73,10 +74,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private boolean mLocationPermissionDenied = false;
 
     private ArrayList<LatLng> marks = new ArrayList<>();
-    //    JSONArray jsonArray = new JSONArray();
-//    JSONObject jobj = new JSONObject();
+
     SupportMapFragment mapFragment;
+
     public static final int SHOW_RESPONSE = 0;
+
     private Handler handler = new Handler() {
 
         public void handleMessage(Message msg) {
@@ -88,6 +90,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         JSONObject object = new JSONObject(response);
                         Selected_JSONObj.object = object;
                         GeoJsonLayer layer = new GeoJsonLayer(mapFragment.getMap(), Selected_JSONObj.object);
+                        // Set users preference on the map
                         mapsetting(layer);
                         // layer.addLayerToMap();
                     } catch (JSONException e) {
@@ -111,7 +114,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         sendRequestWithURLConnection();
     }
 
-    /**
+    /*
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
      * This is where we can add markers or lines, add listeners or move the camera. In this case,
@@ -125,19 +128,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         mUiSettings = mMap.getUiSettings();
-
-        //get the points from selected location
-//        Intent intent = getIntent();
-//        Capabilities cap = (Capabilities)intent.getSerializableExtra("capobj");
-//        Picked_City.cap_picked = cap;
-//        double lowerLa = Double.parseDouble(cap.bbox.getLowerLa().toString());
-//        double higherLa = Double.parseDouble(cap.bbox.getHigherLa().toString());
-//        double lowerLon = Double.parseDouble(cap.bbox.getLowerLon().toString());
-//        double higherLon = Double.parseDouble(cap.bbox.getHigherLon().toString());
-
-        // Add a marker in the location and move the camera
+        // TOBEIMPROVED
         LatLng place = new LatLng(-34, 151);
-//        LatLng place = new LatLng(lowerLa, lowerLon);
+
         mMap.addMarker(new MarkerOptions().position(place).title("Marker in place"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(place));
 
@@ -186,6 +179,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
+
+    // Check if location permission is granted and requires it if not
     private void enableMyLocation() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -363,19 +358,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    // Should be replaced with Vector tile server in the future
+    // This method sends request and receive geoJson
     private void sendRequestWithURLConnection() {
         final String typename = Picked_City.cap_picked.name;
         final String geoname = Picked_City.cap_picked.geoname;
-//        final double lla = Picked_City.picked_city.getLowerLa();
-//        final double llo = Picked_City.picked_city.getLowerLon();
-//        final double hla = Picked_City.picked_city.getHigherLa();
-//        final double hlo = Picked_City.picked_city.getHigherLon();
         final double lla = Picked_City.cap_picked.bbox.getLowerLa();
         final double llo = Picked_City.cap_picked.bbox.getLowerLon();
         final double hla = Picked_City.cap_picked.bbox.getHigherLa();
         final double hlo = Picked_City.cap_picked.bbox.getHigherLon();
 
-        //System.out.println("URL connection");
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -386,8 +378,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 });
                 try{
-//                    URL url = new URL("http://openapi.aurin.org.au/wfs?request=GetFeature&service=WFS&version=1.1.0&TypeName=aurin:datasource-SA_LGovt_CSC-UA_WISeR_csc_contours_2009&MaxFeatures=1000&outputFormat=json&CQL_FILTER=BBOX(ogr_geometry,-34.846252440521084,138.51091003418003,-34.68959045321829,138.703155517578)");
-//                    URL url = new URL("http://openapi.aurin.org.au/wfs?request=GetFeature&service=WFS&version=1.1.0&TypeName=aurin:datasource-NSW_Govt_DPE-UoM_AURIN_DB_nsw_srlup_additional_rural_2014&MaxFeatures=1000&outputFormat=json&CQL_FILTER=BBOX(wkb_geometry,-34.56892173597309,150.317495074652,-28.60812997748689,153.441090598298)");
                     URL url = new URL("http://openapi.aurin.org.au/wfs?" +
                             "request=GetFeature&service=WFS&version=1.1.0&" +
                             "TypeName="+ typename+ "&" +
@@ -396,21 +386,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // URL url = new URL("http://10.13.185.90:3000/query");
 
                     // +")&PropertyName="+Map_Setting.attribute+","+Map_Setting.classifier
-
-                    System.out.println(url);
+                    Log.i("URLOutput", url.toString());
                     connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
                     connection.setConnectTimeout(8000);
                     connection.setReadTimeout(8000);
                     System.out.println(" connection complete ");
+
                     InputStream in = connection.getInputStream();
                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                     StringBuilder response = new StringBuilder();
                     String line;
-                    System.out.println("line complete");
                     while ((line = reader.readLine()) != null) {
                         response.append(line);
                     }
+
                     String data = response.toString();
                     Message message = new Message();
                     message.what = SHOW_RESPONSE;
@@ -451,7 +441,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //            step=1;
 //        }
         for (final GeoJsonFeature feature : layer.getFeatures()){
-            System.out.print("fuck");
             String type = feature.getGeometry().getType();
             if (type.equals("MultiPolygon")){
 //                double value = Double.parseDouble(feature.getProperty(Map_Setting.classifier));

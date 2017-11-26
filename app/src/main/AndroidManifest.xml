@@ -22,8 +22,8 @@
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="false"
-        android:icon="@mipmap/ic_launcher"
-        android:label="AURIN"
+        android:icon="@mipmap/ic_launcher_earth_liam"
+        android:label="Urban Data Analysis"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -72,7 +72,6 @@
             android:name=".Map_Filter"
             android:screenOrientation="portrait" />
         <activity android:name=".ChartActivity" />
-        <activity android:name=".TestActivity"></activity>
     </application>
 
 </manifest>

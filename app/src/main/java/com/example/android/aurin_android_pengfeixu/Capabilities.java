@@ -6,6 +6,7 @@ package com.example.android.aurin_android_pengfeixu;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+// A object containing info about dataset
 public class Capabilities implements Serializable {
     public String name = "no name";
     public String title = "no data title";

@@ -70,7 +70,6 @@ public class Map_Filter extends AppCompatActivity {
         setContentView(R.layout.activity_map_filter);
         sendRequestWithURLConnection();
 
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         sele_atrri = (Spinner) findViewById(R.id.select_attribute);
         sele_class = (Spinner) findViewById(R.id.select_classifier);
         sele_level = (Spinner) findViewById(R.id.select_level);
@@ -80,6 +79,7 @@ public class Map_Filter extends AppCompatActivity {
         view = (ImageButton) findViewById(R.id.submit);
         fig = (ImageButton) findViewById(R.id.figure_view);
 
+        // Set spinner for attributes, all items in the drop down view are in attributes array list
         adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,attributes);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sele_atrri.setAdapter(adapter1);
@@ -96,6 +96,7 @@ public class Map_Filter extends AppCompatActivity {
         });
         sele_atrri.setVisibility(View.VISIBLE);
 
+        // Set spinner for classifiers
         adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,classifiers);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sele_class.setAdapter(adapter2);
@@ -112,7 +113,7 @@ public class Map_Filter extends AppCompatActivity {
         });
         sele_class.setVisibility(View.VISIBLE);
 
-
+        // Set spinner for available color collections
         adapter4 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,colors);
         adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sele_color.setAdapter(adapter4);
@@ -128,8 +129,7 @@ public class Map_Filter extends AppCompatActivity {
         });
         sele_color.setVisibility(View.VISIBLE);
 
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
+        // Set spinner for class level
         adapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,level);
         adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sele_level.setAdapter(adapter3);
@@ -145,6 +145,7 @@ public class Map_Filter extends AppCompatActivity {
         });
         sele_level.setVisibility(View.VISIBLE);
 
+        // Set opacity
         sele_opacity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             public void onStopTrackingTouch(SeekBar seekBar) {
@@ -165,6 +166,8 @@ public class Map_Filter extends AppCompatActivity {
             }
         });
 
+        // Specify what app will do if MAP button is hit
+        // Get all user options and jump to MapActivity
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -197,6 +200,7 @@ public class Map_Filter extends AppCompatActivity {
             }
         });
 
+        // Specify what app will do if FIGURE button is hit
         fig.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
