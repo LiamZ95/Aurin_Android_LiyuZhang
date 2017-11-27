@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.android.aurin_android_pengfeixu">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,7 +14,8 @@
         android:maxSdkVersion="22" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
-    <uses-library android:name="com.google.android.maps" />
+    <uses-library android:name="com.google.android.maps"
+        tools:ignore="WrongManifestParent" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -25,9 +27,10 @@
         android:icon="@mipmap/ic_launcher_earth_liam"
         android:label="Urban Data Analysis"
         android:supportsRtl="true"
+        android:largeHeap="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".StepthroughActivity"
+            android:name=".MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,12 +38,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".StartActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".MainActivity"
-            android:screenOrientation="portrait" />
+        <!--<activity-->
+            <!--android:name=".StartActivity"-->
+            <!--android:screenOrientation="portrait" />-->
+        <!--<activity-->
+            <!--android:name=".MainActivity"-->
+            <!--android:screenOrientation="portrait" />-->
         <activity android:name=".SecondActivity" />
         <activity
             android:name=".WebViewActivity"

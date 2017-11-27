@@ -128,10 +128,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         mUiSettings = mMap.getUiSettings();
-        // TOBEIMPROVED
-        LatLng place = new LatLng(-34, 151);
+        // Set place as the centre of Australia and move camera to there
+        LatLng place = new LatLng(-32, 147);
 
-        mMap.addMarker(new MarkerOptions().position(place).title("Marker in place"));
+//        mMap.addMarker(new MarkerOptions().position(place).title("Marker in place"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(place));
 
         mUiSettings.setZoomControlsEnabled(isChecked(R.id.zoom_buttons_toggle));
@@ -147,7 +147,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+            // for ActivityCompat#requestPermissions for   more details.
             return;
         }
         mMap.setMyLocationEnabled(isChecked(R.id.mylocationlayer_toggle));
@@ -386,7 +386,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // URL url = new URL("http://10.13.185.90:3000/query");
 
                     // +")&PropertyName="+Map_Setting.attribute+","+Map_Setting.classifier
-                    Log.i("URLOutput", url.toString());
+                    Log.i("MapsActivity-urlOutput", url.toString());
                     connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
                     connection.setConnectTimeout(8000);
@@ -518,8 +518,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapClick(LatLng point) {
         mMap.addMarker(new MarkerOptions().position(point).snippet("clicked!"));
-        System.out.println("Click!!!!!!!!!!");
-
     }
 
     private void getPosition(GeoJsonFeature feature){
