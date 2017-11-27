@@ -1,7 +1,7 @@
 /**
  * Created by PENGFEI XU on 2017.
  */
-package com.example.android.aurin_android_pengfeixu;
+package com.example.android.aurin_android_liyuzhang;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         web.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, com.example.android.aurin_android_pengfeixu.WebViewActivity.class);
+                Intent intent = new Intent(MainActivity.this, com.example.android.aurin_android_liyuzhang.WebViewActivity.class);
                 String url = "http://aurin.org.au/";
                 intent.putExtra("url", url);
                 startActivity(intent);
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //              sendRequestWithURLConnection();
-                Intent intent = new Intent(MainActivity.this, com.example.android.aurin_android_pengfeixu.SecondActivity.class);
+                Intent intent = new Intent(MainActivity.this, com.example.android.aurin_android_liyuzhang.SecondActivity.class);
                 intent.setAction("action");
                 //Bundle bundle = new Bundle();
                 //bundle.putParcelableArrayList("titles", titles);

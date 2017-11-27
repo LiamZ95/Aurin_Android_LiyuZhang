@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context="com.example.android.aurin_android_pengfeixu.WebViewActivity"
+    tools:context="com.example.android.aurin_android_liyuzhang.WebViewActivity"
     android:orientation="vertical">
 
     <WebView

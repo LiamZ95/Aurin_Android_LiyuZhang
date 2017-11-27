@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.android.aurin_android_pengfeixu">
+    package="com.example.android.aurin_android_liyuzhang">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -30,7 +30,7 @@
         android:largeHeap="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.android.aurin_android_liyuzhang.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,15 +44,15 @@
         <!--<activity-->
             <!--android:name=".MainActivity"-->
             <!--android:screenOrientation="portrait" />-->
-        <activity android:name=".SecondActivity" />
+        <activity android:name="com.example.android.aurin_android_liyuzhang.SecondActivity" />
         <activity
-            android:name=".WebViewActivity"
+            android:name="com.example.android.aurin_android_liyuzhang.WebViewActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".DetailActivity" />
+        <activity android:name="com.example.android.aurin_android_liyuzhang.DetailActivity" />
         <activity
-            android:name=".AboutUsActivity"
+            android:name="com.example.android.aurin_android_liyuzhang.AboutUsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ThirdActivity" />
+        <activity android:name="com.example.android.aurin_android_liyuzhang.ThirdActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -69,12 +69,12 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name="com.example.android.aurin_android_liyuzhang.MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity
-            android:name=".Map_Filter"
+            android:name="com.example.android.aurin_android_liyuzhang.Map_Filter"
             android:screenOrientation="portrait" />
-        <activity android:name=".ChartActivity" />
+        <activity android:name="com.example.android.aurin_android_liyuzhang.ChartActivity" />
     </application>
 
 </manifest>

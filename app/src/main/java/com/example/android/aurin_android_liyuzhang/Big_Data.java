@@ -2,7 +2,7 @@
  * Created by PENGFEI XU on 2017.
  * this class is for the big data for further functionalities
  */
-package com.example.android.aurin_android_pengfeixu;
+package com.example.android.aurin_android_liyuzhang;
 
 import java.util.ArrayList;
 

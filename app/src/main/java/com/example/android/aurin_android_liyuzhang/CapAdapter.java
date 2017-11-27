@@ -2,7 +2,7 @@
  * Created by PENGFEI XU on 2017.
  * This class defines a adapter for list view
  */
-package com.example.android.aurin_android_pengfeixu;
+package com.example.android.aurin_android_liyuzhang;
 
 import android.content.Context;
 import android.view.LayoutInflater;

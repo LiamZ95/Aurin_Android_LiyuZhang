@@ -1,7 +1,7 @@
 /**
  * Created by PENGFEI XU on 2017.
  */
-package com.example.android.aurin_android_pengfeixu;
+package com.example.android.aurin_android_liyuzhang;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,6 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;

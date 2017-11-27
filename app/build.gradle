@@ -4,7 +4,7 @@ android {
     compileSdkVersion 23
     buildToolsVersion '26.0.2'
     defaultConfig {
-        applicationId "com.example.android.aurin_android_pengfeixu"
+        applicationId "com.example.android.aurin_android_liyuzhang"
         minSdkVersion 18
         targetSdkVersion 23
         versionCode 1
