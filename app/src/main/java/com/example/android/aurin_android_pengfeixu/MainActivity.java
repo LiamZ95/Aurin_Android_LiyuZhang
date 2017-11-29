@@ -6,12 +6,16 @@ package com.example.android.aurin_android_pengfeixu;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.google.android.gms.games.internal.constants.Capability;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -81,7 +85,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Send http request and parse the received xml data
         sendRequestWithURLConnection();
+
+//        Log.i("Main###AllDataSetsSize", String.valueOf(AllDatasets.lists.size()));
 
         view1 = (TextView) findViewById(R.id.spinner1_textview);
         view2 = (TextView) findViewById(R.id.spinner2_textview);
@@ -112,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
         spinner1.setVisibility(View.VISIBLE);
 
+//        Log.i("Main###AllDataSetsSize2", String.valueOf(AllDatasets.lists.size()));
 
         // Hit the Web View button and visit AURIN website, using internal browser
         ImageButton web = (ImageButton) findViewById(R.id.webview);
@@ -144,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                 Picked_City.picked_city = filter_bbox;
                 // city_filter(filter_bbox);
                 intent.putExtra("bbox", filter_bbox);
-                System.out.println(filter_bbox.getHigherLa());
+                Log.i("Main###bboxHighLa", filter_bbox.getHigherLa().toString());
                 startActivity(intent);
             }
         });
@@ -163,21 +172,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void city_filter(BBOX city){
-        double city_lowla = city.getLowerLa();
-        double city_lowlo = city.getLowerLon();
-        double city_hila = city.getHigherLa();
-        double city_hilo = city.getHigherLon();
-
-        for (Capabilities cap : AllDatasets.lists){
-            if (cap.bbox.getHigherLon()<city_lowlo && cap.bbox.getHigherLa()<city_lowla){
-                AllDatasets.lists.remove(cap);
-            }
-            else if(cap.bbox.getLowerLa()>city_hila && cap.bbox.getLowerLon()>city_hilo){
-                AllDatasets.lists.remove(cap);
-            }
-        }
-    }
+//    private void city_filter(BBOX city){
+//        double city_lowla = city.getLowerLa();
+//        double city_lowlo = city.getLowerLon();
+//        double city_hila = city.getHigherLa();
+//        double city_hilo = city.getHigherLon();
+//
+//        for (Capabilities cap : AllDatasets.lists){
+//            if (cap.bbox.getHigherLon()<city_lowlo && cap.bbox.getHigherLa()<city_lowla){
+//                AllDatasets.lists.remove(cap);
+//            }
+//            else if(cap.bbox.getLowerLa()>city_hila && cap.bbox.getLowerLon()>city_hilo){
+//                AllDatasets.lists.remove(cap);
+//            }
+//        }
+//    }
 
 
     // sending http request for all dataset, and then parse the received data
@@ -236,8 +245,8 @@ public class MainActivity extends AppCompatActivity {
             String organization = "";
             String geoname = "";
             BBOX bbox = new BBOX();
+            String keywordsStr = "";
 
-            ArrayList<String> keywords = new ArrayList<>();
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 // nodeName is the current XML tag
                 String nodeName = xmlPullParser.getName();
@@ -249,8 +258,10 @@ public class MainActivity extends AppCompatActivity {
                         }
                         else if ("Title".equals(nodeName)){
                             title = xmlPullParser.nextText();
-                            String [] array1 = title.split(":");
-                            organization = array1[1];
+//                            Log.i("Main###title", title);
+                            String[] tempArray = title.split(" Data provider: ");
+                            title = tempArray[0];
+                            organization = tempArray[1];
                         }
                         else if ("Abstract".equals(nodeName)){
                             String abstracts1 = xmlPullParser.nextText();
@@ -273,7 +284,8 @@ public class MainActivity extends AppCompatActivity {
                         }
                         else if ("ows:Keyword".equals(nodeName)){
                             String keyword = xmlPullParser.nextText();
-                            keywords.add(keyword);
+                            keywordsStr += ", ";
+                            keywordsStr += keyword;
                         }
                         else if ("ows:LowerCorner".equals(nodeName)){
                             String[] lowerCorner = xmlPullParser.nextText().split(" ");
@@ -295,11 +307,11 @@ public class MainActivity extends AppCompatActivity {
                             cap.title = title;
                             cap.organization = organization;
                             cap.abstracts = abstracts;
-                            cap.keywords = keywords;
+                            keywordsStr = keywordsStr.substring(2);
+                            cap.keywords = keywordsStr;
                             cap.geoname = geoname;
                             //cap.bbox = bbox;
 
-                            // WEIRD!
                             cap.bbox.setHigherLa(bbox.getHigherLa());
                             cap.bbox.setHigherLon(bbox.getHigherLon());
                             cap.bbox.setLowerLa(bbox.getLowerLa());
@@ -307,107 +319,107 @@ public class MainActivity extends AppCompatActivity {
 
                             // set the organization logo for each capability
                             switch (organization){
-                                case " Government of New South Wales - Department of Planning and Environment":
+                                case "Government of New South Wales - Department of Planning and Environment":
                                     cap.image_id=R.drawable.government_of_new_south_wales_department_of_plaaning_and_envirnoment;
                                     break;
-                                case " Internode Pty. Ltd.":
+                                case "Internode Pty. Ltd.":
                                     cap.image_id=R.drawable.internode_pty_ltd;
                                     break;
-                                case " Government of South Australia - RenewalSA":
+                                case "Government of South Australia - RenewalSA":
                                     cap.image_id=R.drawable.government_of_south_australia_renewalsa;
                                     break;
-                                case " Government of the Commonwealth of Australia - Geoscience Australia":
+                                case "Government of the Commonwealth of Australia - Geoscience Australia":
                                     cap.image_id=R.drawable.government_of_the_commonwealth_of_australia_geoscience_australia;
                                     break;
-                                case " Local Government of Queensland - Brisbane City Council":
+                                case "Local Government of Queensland - Brisbane City Council":
                                     cap.image_id=R.drawable.local_government_of_queensland_brisbane_city_council;
                                     break;
-                                case " Local Government of South Australia - City of Salisbury":
+                                case "Local Government of South Australia - City of Salisbury":
                                     cap.image_id=R.drawable.local_government_of_south_australia_city_of_salisbury;
                                     break;
-                                case " Government of South Australia - Department of Planning, Transport and Infrastructure":
+                                case "Government of South Australia - Department of Planning, Transport and Infrastructure":
                                     cap.image_id=R.drawable.government_of_south_australia_department_of_planning_transport_and_infrastructure;
                                     break;
-                                case " Government of South Australia - Department for Communities and Social Inclusion":
+                                case "Government of South Australia - Department for Communities and Social Inclusion":
                                     cap.image_id=R.drawable.government_of_south_australia_department_for_communities_and_social_inclusion;
                                     break;
-                                case " Government of South Australia - Department of Environment, Water and Natural Resources":
+                                case "Government of South Australia - Department of Environment, Water and Natural Resources":
                                     cap.image_id=R.drawable.government_of_south_australia_department_of_environment_water_and_aatural_resources;
                                     break;
-                                case " Government of Queensland - Department of Transport and Main Roads - Road Statistics":
+                                case "Government of Queensland - Department of Transport and Main Roads - Road Statistics":
                                     cap.image_id=R.drawable.government_of_queensland_department_of_transport_and_main_roads_road_statistics;
                                     break;
-                                case " Australian Government - Department of Social Services":
+                                case "Australian Government - Department of Social Services":
                                     cap.image_id=R.drawable.australian_government_department_of_social_services;
                                     break;
-                                case " Government of South Australia - Local Government Association of South Australia":
+                                case "Government of South Australia - Local Government Association of South Australia":
                                     cap.image_id=R.drawable.government_of_south_australia_local_government_association_of_south_australia;
                                     break;
-                                case " Government of the Commonwealth of Australia - Australian Bureau of Statistics":
+                                case "Government of the Commonwealth of Australia - Australian Bureau of Statistics":
                                     cap.image_id=R.drawable.government_of_the_commonwealth_of_australia_australian_bureau_of_statistics;
                                     break;
-                                case " Government of New South Wales - Department of Education":
+                                case "Government of New South Wales - Department of Education":
                                     cap.image_id=R.drawable.government_of_new_south_wales_department_of_education;
                                     break;
-                                case " Government of Queensland - Department of Education and Training":
+                                case "Government of Queensland - Department of Education and Training":
                                     cap.image_id=R.drawable.government_of_queensland_department_of_education_and_training;
                                     break;
-                                case " Government of Queensland - Department of Natural Resources and Mines":
+                                case "Government of Queensland - Department of Natural Resources and Mines":
                                     cap.image_id=R.drawable.government_of_queensland_department_of_natural_resources_and_mines;
                                     break;
-                                case " Government of South Australia - Attorney-General's Department":
+                                case "Government of South Australia - Attorney-General's Department":
                                     cap.image_id=R.drawable.government_of_south_australia_attorney_generals_department;
                                     break;
-                                case " Government of South Australia - Department for Education and Child Development":
+                                case "Government of South Australia - Department for Education and Child Development":
                                     cap.image_id=R.drawable.government_of_south_australia_department_for_education_and_child_development;
                                     break;
-                                case " Government of South Australia - Department for State Development":
+                                case "Government of South Australia - Department for State Development":
                                     cap.image_id=R.drawable.government_of_south_australia_department_for_state_development;
                                     break;
                                 case "Government of South Australia - Department of Environment Water and Natural Resources":
                                     cap.image_id=R.drawable.government_of_south_australia_department_of_environment_water_and_natural_resources;
                                     break;
-                                case " Government of South Australia - SA Health":
+                                case "Government of South Australia - SA Health":
                                     cap.image_id=R.drawable.government_of_south_australia_sa_health;
                                     break;
-                                case " Government of Tasmania - Department Of Primary Industries, Parks, Water And Environment":
+                                case "Government of Tasmania - Department Of Primary Industries, Parks, Water And Environment":
                                     cap.image_id=R.drawable.government_of_tasmania_department_of_primary_industries_parks_water_and_environment;
                                     break;
-                                case " Government of the Australian Capital Territory - Department of Education and Training":
+                                case "Government of the Australian Capital Territory - Department of Education and Training":
                                     cap.image_id=R.drawable.government_of_the_australian_capital_territory_department_of_education_and_training;
                                     break;
-                                case " Government of the Australian Capital Territory - Environment, Planning and Sustainable Development Directorate":
+                                case "Government of the Australian Capital Territory - Environment, Planning and Sustainable Development Directorate":
                                     cap.image_id=R.drawable.government_of_the_australian_capital_territory_environment_planning_long;
                                     break;
-                                case " Government of the Commonwealth of Australia - Department of Human Services":
+                                case "Government of the Commonwealth of Australia - Department of Human Services":
                                     cap.image_id=R.drawable.government_of_the_commonwealth_of_australia_department_of_human_services;
                                     break;
-                                case " Government of Victoria - Crime Statistics Agency":
+                                case "Government of Victoria - Crime Statistics Agency":
                                     cap.image_id=R.drawable.government_of_victoria_crime_statistics_agency;
                                     break;
-                                case " Government of Victoria - Department of Education and Training":
+                                case "Government of Victoria - Department of Education and Training":
                                     cap.image_id=R.drawable.government_of_victoria_department_of_education_and_training;
                                     break;
-                                case " Government of Victoria - Department of Environment, Land, Water and Planning":
+                                case "Government of Victoria - Department of Environment, Land, Water and Planning":
                                     cap.image_id=R.drawable.government_of_victoria_department_of_environment_land_water_and_planning;
                                     break;
-                                case " Government of Victoria - Department of Health and Human Services":
+                                case "Government of Victoria - Department of Health and Human Services":
                                     cap.image_id=R.drawable.government_of_victoria_department_of_health_and_human_services;
                                     break;
-                                case " Government of Victoria - Victorian Commission for Gambling and Liquor Regulation":
+                                case "Government of Victoria - Victorian Commission for Gambling and Liquor Regulation":
                                     cap.image_id=R.drawable.government_of_victoria_victorian_commission_for_gambling_and_liquor_regulation;
                                     break;
-                                case " NSW Bureau of Crime Statistics and Research":
+                                case "NSW Bureau of Crime Statistics and Research":
                                     cap.image_id=R.drawable.nsw_bureau_of_crime_statistics_and_research;
                                     break;
-                                case " Victoria State Government - Department of Treasury and Finance":
+                                case "Victoria State Government - Department of Treasury and Finance":
                                     cap.image_id=R.drawable.victoria_state_government_department_of_treasury_and_finance;
                                     break;
-                                case " Melbourne Water Corporation":
+                                case "Melbourne Water Corporation":
                                     cap.image_id=R.drawable.melbourne_water_corporation;
                                     break;
                                 default:
-                                    cap.image_id=R.drawable.aurin;
+                                    cap.image_id=R.drawable.defalut_org_image;
 
                             }
                             if(! Big_Data.big_data.contains(cap.title))

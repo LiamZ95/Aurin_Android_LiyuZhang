@@ -386,7 +386,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // URL url = new URL("http://10.13.185.90:3000/query");
 
                     // +")&PropertyName="+Map_Setting.attribute+","+Map_Setting.classifier
-                    Log.i("MapsActivity-urlOutput", url.toString());
+                    Log.i("Maps: urlOutput", url.toString());
                     connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
                     connection.setConnectTimeout(8000);

@@ -13,7 +13,7 @@ public class Capabilities implements Serializable {
     public String abstracts = "no abstracts";
     public String organization = "no organization";
     public String geoname = "no name";
-    public ArrayList<String> keywords;
+    public String keywords;
     public BBOX bbox = new BBOX();
     public int image_id;
 }

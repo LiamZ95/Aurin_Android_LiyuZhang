@@ -6,6 +6,7 @@ package com.example.android.aurin_android_pengfeixu;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,7 +23,8 @@ public class SecondActivity extends AppCompatActivity{
     ArrayAdapter<String> adapter1;
     public Spinner spinner;
     public EditText eSearch;
-
+    CapAdapter capAdapter;
+    CapabilitiesAdapter capabilitiesAdapter;
     @Override
     /*
      If user does not specify any keyword but select dataset directly,
@@ -39,7 +41,7 @@ public class SecondActivity extends AppCompatActivity{
             filter_bbox = (BBOX)intent.getSerializableExtra("bbox");
             Picked_City.picked_city = filter_bbox;
 
-            // cap2 contains all dataset from MainActivity
+            // cap2 contains all data set from MainActivity
             // Add all capabilities from MainActivity to cap2
             for (int i = 0; i< AllDatasets.lists.size();i++){
                 cap2.add(AllDatasets.lists.get(i));
@@ -51,6 +53,31 @@ public class SecondActivity extends AppCompatActivity{
                 if(! spinner_Items.contains(org))
                     spinner_Items.add(org);
             }
+
+//            Log.i("Second###CapSize", String.valueOf(cap2.size()));
+//
+//            for (int i = 0; i < 10; i++) {
+//                Capabilities cap = cap2.get(i);
+//                String name = cap.name;
+//                String title = cap.title;
+//                String abstracts = cap.abstracts;
+//                String organization = cap.organization;
+//                String geoName = cap.geoname;
+//                String keywords = "";
+//                ArrayList<String> kws = cap.keywords;
+//                for (int j = 0; j < kws.size(); j++) {
+//                    keywords += kws.get(j);
+//                    keywords += " ";
+//                }
+//                int imageId = cap.image_id;
+//                Log.i("Second###name", name);
+//                Log.i("Second###title", title);
+//                Log.i("Second###abstract", abstracts);
+//                Log.i("Second###org", organization);
+//                Log.i("Second###geo", geoName);
+//                Log.i("Second###keywords", keywords);
+//                Log.i("Second###ImageId", String.valueOf(imageId));
+//            }
 
             // Setting for organization spinner
             spinner_Items.add("All Organizations");
@@ -73,11 +100,14 @@ public class SecondActivity extends AppCompatActivity{
             });
             spinner.setVisibility(View.VISIBLE);
 
-            // Setting for listView
-            CapAdapter adapter = new CapAdapter(SecondActivity.this, R.layout.list_view_sub, cap2);
+            // Set the format of list view
+            // Self-defined layout format
+
+//            capAdapter = new CapAdapter(this, R.layout.list_view_sub, cap2);
+            capabilitiesAdapter = new CapabilitiesAdapter(getApplicationContext(), cap2);
             ListView listView = (ListView) findViewById(R.id.list_view);
-            listView.setAdapter(adapter);
-            System.out.println(filter_bbox.getHigherLa());
+            listView.setAdapter(capabilitiesAdapter);
+//            System.out.println(filter_bbox.getHigherLa());
 
             // If an item in listView is selected, then go to DetailActivity, carrying that cap object
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -100,36 +130,22 @@ public class SecondActivity extends AppCompatActivity{
                 @Override
                 public void onClick(View v) {
 
-                    String orgselec = spinner.getSelectedItem().toString();
-                    final String search = eSearch.getText().toString();
-                    ArrayList<String> organdselec = new ArrayList<>();
-                    organdselec.add(orgselec);
-                    organdselec.add(search);
+                    String selectedOrganization = spinner.getSelectedItem().toString();
+                    final String searchText = eSearch.getText().toString();
+                    ArrayList<String> orgAndKw = new ArrayList<>();
+                    orgAndKw.add(selectedOrganization);
+                    orgAndKw.add(searchText);
 
                     // Pass selected organization and keyword to ThirdActivity
                     Intent intent = new Intent(SecondActivity.this, ThirdActivity.class);
                     intent.setAction("action");
-                    intent.putExtra("organdselec",organdselec);
+                    intent.putExtra("organdselec",orgAndKw);
                     startActivity(intent);
                 }
             });
         }
 
 
-    }
-
-    private double max(double a, double b) {
-        if(a>=b)
-            return a;
-        else
-            return b;
-    }
-
-    private double min(double a, double b) {
-        if (a<=b)
-            return a;
-        else
-            return b;
     }
 
     @Override

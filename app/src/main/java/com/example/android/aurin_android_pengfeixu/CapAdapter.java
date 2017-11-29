@@ -19,17 +19,20 @@ public class CapAdapter extends ArrayAdapter<Capabilities> {
 
     public CapAdapter(Context context, int textViewResourceId, List<Capabilities> objects){
         super (context, textViewResourceId, objects);
-        resourceId = textViewResourceId;
+        this.resourceId = textViewResourceId;
+
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
         Capabilities cap = getItem(position);
         View view = LayoutInflater.from(getContext()).inflate(resourceId, null);
+
         ImageView capImage = (ImageView) view.findViewById(R.id.cap_image);
-        TextView capText = (TextView) view.findViewById(R.id.cap_name);
+        TextView capText = (TextView) view.findViewById(R.id.cap_title);
+
         capImage.setImageResource(cap.image_id);
-        capText.setText(cap.title);
+        capText.setText(cap.title.split("Data provider: ")[0]);
         return view;
     }
 }
