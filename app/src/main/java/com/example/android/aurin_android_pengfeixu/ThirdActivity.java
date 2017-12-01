@@ -53,7 +53,7 @@ public class ThirdActivity extends AppCompatActivity {
             else
                 query = "";
 
-            // This clause filter out datasets related to keyword
+            // This clause filter out data sets related to keyword
             if(! (query.equals("") || query.equals("All Organizations"))){
 
 //                for(int i=0,len= cap3.size();i<len; i++){
@@ -69,7 +69,14 @@ public class ThirdActivity extends AppCompatActivity {
 //                    len--;
 //                    i--;
 //                }
-//                String lowerKeywords = cap3.get(i).keywords;
+                for (int i = 0, len = cap3.size(); i < len; i++) {
+                    Capabilities cap = cap3.get(i);
+                    if (!cap.keywords.contains(query)) {
+                        cap3.remove(i);
+                        len--;
+                        i--;
+                    }
+                }
             }
 
             Log.i("Third###FilteredCaps", String.valueOf(cap3.size()));

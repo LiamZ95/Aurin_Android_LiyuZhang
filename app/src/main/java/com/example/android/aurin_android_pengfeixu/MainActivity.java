@@ -309,6 +309,7 @@ public class MainActivity extends AppCompatActivity {
                             cap.abstracts = abstracts;
                             keywordsStr = keywordsStr.substring(2);
                             cap.keywords = keywordsStr;
+                            keywordsStr = "";
                             cap.geoname = geoname;
                             //cap.bbox = bbox;
 

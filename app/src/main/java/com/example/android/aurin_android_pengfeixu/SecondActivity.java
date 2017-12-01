@@ -10,8 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import java.util.ArrayList;
@@ -124,8 +124,8 @@ public class SecondActivity extends AppCompatActivity{
             // Search bar
             eSearch = (EditText) findViewById(R.id.etSearch);
             // Search button
-            ImageButton go;
-            go = (ImageButton) findViewById(R.id.keyword);
+            Button go;
+            go = (Button) findViewById(R.id.keyword);
             go.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
